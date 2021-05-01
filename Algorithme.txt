@@ -42,12 +42,16 @@ Début
 	compteur2 <- 0
 	
 	TantQue redemander Faire
-		écrire "Proposez quartres lettres différentes entre A et H." 
+		écrire "Proposez quartre lettres différentes entre A et H." 
 		écrire "Quelle est votre proposition ?" 
 		lire proposition
 
 		//Test longueur et transformation en majucules
-		redemander <- nb_lettre(proposition) != 4
+		Si nb_lettre(proposition) != 4 alors
+			redemander <- vrai
+			écrire "Il y a plus ou moins de 4 lettres."
+		FinSi
+		
 		Si !redemander alors
 			enMajuscule(proposition)
 		FinSi
@@ -65,6 +69,7 @@ Début
 				//Test si c'est entre A et H
 				Si(caracteres_proposition[compteur1] < A ou caracteres_proposition[compteur1] > H) alors
 					redemander <- vrai
+					écrire "Tous les caractères ne sont pas compris entre A et H"
 				FinSi
 				
 				//Test de doublon
@@ -72,6 +77,7 @@ Début
 					Si compteur1 != compteur2 alors
 						Si caracteres_proposition[compteur1] = caracteres_proposition[compteur2] alors
 							redemander <- vrai
+							écrire "Certaines lettres sont en double"
 						FinSi
 					FinSi
 				FinPour

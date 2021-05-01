@@ -1,11 +1,21 @@
 // Génération de la séquence
-
 Variable 
 	sequence, choix : chaîne de caractères
 	nombre1, nombre2, nombre3, nombre4: caractère
-	compteur, longueur_choix : entier
+	longueur_choix : entier
+
+// Lecture proposition du joueur 	
+Variable
+	proposition : chaîne de caractères
+	redemander : booléen
+	compteur1, compteur2 : entier
+
+Tableau
+	caracteres_proposition(4) : caractère
+	
 	
 Début
+//Génération de la séquence
 	choix <- "ABCDEFGH"
 	longueur_choix <- nb_lettre(choix)
 	
@@ -24,13 +34,61 @@ Début
 	FinTantQue
 	
 	sequence <- caractèreA(choix, nombre1) & caractèreA(choix, nombre2) & caractèreA(choix, nombre3) & caractèreA(choix, nombre4)
-	
-	
-	
-	
-	
-	
-	
 
+//Lecture et validation de la proposition du joueur
+	proposition <- a
+	redemander <- vrai
+	compteur1 <- 0
+	compteur2 <- 0
+	
+	TantQue redemander Faire
+		écrire "Proposez quartres lettres différentes entre A et H." 
+		écrire "Quelle est votre proposition ?" 
+		lire proposition
 
+		//Test longueur et transformation en majucules
+		redemander <- nb_lettre(proposition) != 4
+		Si !redemander alors
+			enMajuscule(proposition)
+		FinSi
+		
+		//Tranfert dans tableau
+		Si !redemander alors
+			Pour compteur1 de 0 à 3
+				caracteres_proposition[compteur1] <- caractèreA(proposition, compteur)
+			FinPour
+		FinSi
+		
+		Si !redemander alors
+			Pour compteur1 de 0 à 3
+			
+				//Test si c'est entre A et H
+				Si(caracteres_proposition[compteur1] < A ou caracteres_proposition[compteur1] > H) alors
+					redemander <- vrai
+				FinSi
+				
+				//Test de doublon
+				Pour compteur2 de 0 à 3
+					Si compteur1 != compteur2 alors
+						Si caracteres_proposition[compteur1] = caracteres_proposition[compteur2] alors
+							redemander <- vrai
+						FinSi
+					FinSi
+				FinPour
+				
+			FinPour
+ 		FinSi
+	FinTantQue
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	

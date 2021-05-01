@@ -1,0 +1,36 @@
+// Génération de la séquence
+
+Variable 
+	sequence, choix : chaîne de caractères
+	nombre1, nombre2, nombre3, nombre4: caractère
+	compteur, longueur_choix : entier
+	
+Début
+	choix <- "ABCDEFGH"
+	longueur_choix <- nb_lettre(choix)
+	
+	nombre1 <- aléatoire(0, longueur_choix - 1)
+	nombre2 <- 0
+	TantQue nombre2 == nombre1 Faire
+		nombre2 <- aléatoire(0, longueur_choix - 1)
+	FinTantQue
+	nombre3 <- 0
+	TantQue nombre3 == nombre1 ou nombre3 == nombre2 Faire
+		nombre3 <- aléatoire(0, longueur_choix - 1)
+	FinTantQue
+	nombre4 <- 0
+	TantQue nombre4 == nombre1 ou nombre4 == nombre2 ou nombre4 == nombre3 Faire
+		nombre4 <- aléatoire(0, longueur_choix - 1)
+	FinTantQue
+	
+	sequence <- caractèreA(choix, nombre1) & caractèreA(choix, nombre2) & caractèreA(choix, nombre3) & caractèreA(choix, nombre4)
+	
+	
+	
+	
+	
+	
+	
+
+
+	

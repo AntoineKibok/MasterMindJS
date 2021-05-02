@@ -17,6 +17,7 @@ Variable
 Variable 
 	sequence, choix : chaîne de caractères
 	caractère_temporaire, nombre1, nombre2, nombre3, nombre4: caractère
+	identique : booléen
 	longueur_choix : entier
 
 // Lecture proposition du joueur 	
@@ -85,30 +86,29 @@ Début
 //Génération de la séquence
 	Fonction generationSequence
 		choix <- "ABCDEFGH"
+		longueur_choix <- nb_lettre(choix)
 		sequence <- ""
 		caractère_temporaire <- ""
-		longueur_choix <- nb_lettre(choix)
-		
-		identique : booléen
-		 
+
+		//Début génération
 		compteur1 <- 0
+		//Boucle pour faire les 4 lettres
 		Pour compteur1 de 0 à 3 Faire
+			//Recommencer si c'est déja dans la séquence
 			TantQue identique Faire
 				identique <- faux
 				caractère_temporaire <- caractèreA(choix, aléatoire(0, longueur_choix - 1)
+				
 				compteur2 <- 0
-				Pour compteur2 de 0 à nb_lettre(sequence - 1) Faire
+				Pour compteur2 de 0 à nb_lettre(sequence) Faire
 					identique <- caractère_temporaire == caractèreA(sequence, compteur2)
 				FinPour
 			FinTantQue
 			sequence <- sequence & caractère_temporaire
 		FinPour
-			
-			
-			
-			
 		
-		//Gétnération des caracteres
+
+		//Génération des caracteres
 		nombre1 <- aléatoire(0, longueur_choix - 1)
 		nombre2 <- 0
 		TantQue nombre2 == nombre1 Faire

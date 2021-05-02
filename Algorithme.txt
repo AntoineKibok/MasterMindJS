@@ -32,137 +32,149 @@ Variable
 	indications : chaîne de caractères
 	victoire : booléen
 	
-	
+ 	
 Début
+
+
+
+
+
+
+
+
 //Génération de la séquence
-	choix <- "ABCDEFGH"
-	longueur_choix <- nb_lettre(choix)
-	
-	nombre1 <- aléatoire(0, longueur_choix - 1)
-	nombre2 <- 0
-	TantQue nombre2 == nombre1 Faire
-		nombre2 <- aléatoire(0, longueur_choix - 1)
-	FinTantQue
-	nombre3 <- 0
-	TantQue nombre3 == nombre1 ou nombre3 == nombre2 Faire
-		nombre3 <- aléatoire(0, longueur_choix - 1)
-	FinTantQue
-	nombre4 <- 0
-	TantQue nombre4 == nombre1 ou nombre4 == nombre2 ou nombre4 == nombre3 Faire
-		nombre4 <- aléatoire(0, longueur_choix - 1)
-	FinTantQue
-	
-	sequence <- caractèreA(choix, nombre1) & caractèreA(choix, nombre2) & caractèreA(choix, nombre3) & caractèreA(choix, nombre4)
+	Fonction generationSequence
+		choix <- "ABCDEFGH"
+		longueur_choix <- nb_lettre(choix)
+		
+		nombre1 <- aléatoire(0, longueur_choix - 1)
+		nombre2 <- 0
+		TantQue nombre2 == nombre1 Faire
+			nombre2 <- aléatoire(0, longueur_choix - 1)
+		FinTantQue
+		nombre3 <- 0
+		TantQue nombre3 == nombre1 ou nombre3 == nombre2 Faire
+			nombre3 <- aléatoire(0, longueur_choix - 1)
+		FinTantQue
+		nombre4 <- 0
+		TantQue nombre4 == nombre1 ou nombre4 == nombre2 ou nombre4 == nombre3 Faire
+			nombre4 <- aléatoire(0, longueur_choix - 1)
+		FinTantQue
+		
+		sequence <- caractèreA(choix, nombre1) & caractèreA(choix, nombre2) & caractèreA(choix, nombre3) & caractèreA(choix, nombre4)
+	FinFonction
 
 //Lecture et validation de la proposition du joueur
-	proposition <- a
-	redemander <- vrai
-	compteur1 <- 0
-	compteur2 <- 0
+	Fonction lectureEtValidation
+		proposition <- a
+		redemander <- vrai
+		compteur1 <- 0
+		compteur2 <- 0
+		
+		TantQue redemander Faire
+			écrire "Proposez quartre lettres différentes entre A et H." 
+			écrire "Quelle est votre proposition ?" 
+			lire proposition
 	
-	TantQue redemander Faire
-		écrire "Proposez quartre lettres différentes entre A et H." 
-		écrire "Quelle est votre proposition ?" 
-		lire proposition
-
-		//Test longueur et transformation en majucules
-		Si nb_lettre(proposition) != 4 alors
-			redemander <- vrai
-			écrire "Il y a plus ou moins de 4 lettres."
-		FinSi
-		
-		Si !redemander alors
-			enMajuscule(proposition)
-		FinSi
-		
-		//Tranfert dans tableau
-		Si !redemander alors
-			Pour compteur1 de 0 à 3
-				caracteres_proposition[compteur1] <- caractèreA(proposition, compteur1)
-			FinPour
-		FinSi
-		
-		Si !redemander alors
-			Pour compteur1 de 0 à 3
+			//Test longueur et transformation en majucules
+			Si nb_lettre(proposition) != 4 alors
+				redemander <- vrai
+				écrire "Il y a plus ou moins de 4 lettres."
+			FinSi
 			
-				//Test si c'est entre A et H
-				Si(caracteres_proposition[compteur1] < A ou caracteres_proposition[compteur1] > H) alors
-					redemander <- vrai
-					écrire "Tous les caractères ne sont pas compris entre A et H"
-				FinSi
-				
-				//Test de doublon
-				Pour compteur2 de 0 à 3
-					Si compteur1 != compteur2 alors
-						Si caracteres_proposition[compteur1] == caracteres_proposition[compteur2] alors
-							redemander <- vrai
-							écrire "Certaines lettres sont en double"
-						FinSi
-					FinSi
+			Si !redemander alors
+				enMajuscule(proposition)
+			FinSi
+			
+			//Tranfert dans tableau
+			Si !redemander alors
+				Pour compteur1 de 0 à 3
+					caracteres_proposition[compteur1] <- caractèreA(proposition, compteur1)
 				FinPour
+			FinSi
+			
+			Si !redemander alors
+				Pour compteur1 de 0 à 3
 				
-			FinPour
- 		FinSi
-	FinTantQue
+					//Test si c'est entre A et H
+					Si(caracteres_proposition[compteur1] < A ou caracteres_proposition[compteur1] > H) alors
+						redemander <- vrai
+						écrire "Tous les caractères ne sont pas compris entre A et H"
+					FinSi
+					
+					//Test de doublon
+					Pour compteur2 de 0 à 3
+						Si compteur1 != compteur2 alors
+							Si caracteres_proposition[compteur1] == caracteres_proposition[compteur2] alors
+								redemander <- vrai
+								écrire "Certaines lettres sont en double"
+							FinSi
+						FinSi
+					FinPour
+					
+				FinPour
+			FinSi
+		FinTantQue
+	FinFonction
 	
 // Analyse de la proposition du joueur
+	Fonction analyseProposition
+		compteur1 <- 0
 	
-	compteur1 <- 0
-
-	//Juste et bien placé -> "1" dans le tableau brut
-	Pour compteur1 de 0 à 3
-		Si caractèreA(proposition,compteur1) == caractèreA(sequence,compteur1) alors
-
-			resultat_brut[taille(resultat_brut)] <- 1
-		FinSi
-	FinPour
+		//Juste et bien placé -> "1" dans le tableau brut
+		Pour compteur1 de 0 à 3
+			Si caractèreA(proposition,compteur1) == caractèreA(sequence,compteur1) alors
 	
-	//Juste et mal placé -> "2" dans le tableau brut
-	compteur1 <- 0
-	compteur2 <- 0
-	Pour compteur1 de 0 à 3
-		Pour Compteur2 de 0 à 3
-			Si(compteur1 != compteur2) alors
-				Si caractèreA(proposition,compteur1) == caractèreA(sequence,compteur2) alors
-					resultat_brut[taille(resultat_brut)] <- 2
-				FinSi
+				resultat_brut[taille(resultat_brut)] <- 1
 			FinSi
 		FinPour
-	FinPour
+		
+		//Juste et mal placé -> "2" dans le tableau brut
+		compteur1 <- 0
+		compteur2 <- 0
+		Pour compteur1 de 0 à 3
+			Pour Compteur2 de 0 à 3
+				Si(compteur1 != compteur2) alors
+					Si caractèreA(proposition,compteur1) == caractèreA(sequence,compteur2) alors
+						resultat_brut[taille(resultat_brut)] <- 2
+					FinSi
+				FinSi
+			FinPour
+		FinPour
+	FinFonction
 	
 //Affichage des résultats
+	Fonction affichageResultat
+		//Création de la chaîne de caractère
+		compteur1 <- 0
+		lettre_juste <- 0
+		indications <- ""
+		
+		Pour compteur1 de 0 à taille(resultat_brut) - 1
+			Si resultat_brut[compteur1] == 1 alors
+				lettre_juste++
+				indications <- indications + "Vert "
+			FinSi
+		FinPour
+		
+		compteur1 <- 0
+		Pour compteur1 de 0 à taille(resultat_brut) - 1
+			Si resultat_brut[compteur1] == 2 alors
+				indications <- indications + "Orange "
+			FinSi
+		FinPour
 	
-	//Création de la chaîne de caractère
-	compteur1 <- 0
-	lettre_juste <- 0
-	indications <- ""
-	
-	Pour compteur1 de 0 à taille(resultat_brut) - 1
-		Si resultat_brut[compteur1] == 1 alors
-			lettre_juste++
-			indications <- indications + "Vert "
+		//Affichage des résultat
+		Si lettre_juste == 4 alors
+			victoire <- vrai
+			écrire "Félicitations ! Vous avez trouvé !"
 		FinSi
-	FinPour
-	
-	compteur1 <- 0
-	Pour compteur1 de 0 à taille(resultat_brut) - 1
-		Si resultat_brut[compteur1] == 2 alors
-			indications <- indications + "Orange "
+		
+		Sinon
+			écrire : proposition + " - " + indications
 		FinSi
-	FinPour
+	FinFonction	
 
-	//Affichage des résultat
-	Si lettre_juste == 4 alors
-		victoire <- vrai
-		écrire "Félicitations ! Vous avez trouvé !"
-	FinSi
-	
-	Sinon
-		écrire : proposition + " - " + indications
-	FinSi
-		
-	
-		
 	
 	
 	

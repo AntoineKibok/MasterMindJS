@@ -1,12 +1,17 @@
 //////////
 // A NE PAS OUBLIER
 // 
-// VICTOIRE -> Tant que ? Gérer le retour à Lecture...
-// GARDER EN MEMOIRE LES CHOIX ET RESULTATS -> Tableau dans tableau ? :skull:
+// Faire une fin avec les observations avant de faire le JS
+// Optimiser la génération de la sequence
 // 
 // 
 //////////
 
+//Variables
+//Nouvelle partie
+Variable
+	nombreEssais, maximumEssais : entier
+	continuer, choixRecommencer : booléen
 
 // Génération de la séquence
 Variable 
@@ -29,14 +34,13 @@ Variable
 	victoire : booléen
 	choixContinuer : caractère
 	
-//Nouvelle partie
-Variable
-	nombreEssais, maximumEssais : entier
-	continuer, choixRecommencer : booléen
-	
- 	
+
+//Instructions
 Début
+
+//Appelée à la création d'une partie
 	Fonction nouvellePartie
+	
 		generationSequence
 		
 		continuer <- vrai
@@ -47,13 +51,14 @@ Début
 		Tableau tentativesVide[6][0] : chaîne de caractères
 		tentatives <- tentativesVide
 
-		
+		//Partie en cours
 		TantQue continuer == vrai et nombreEssais < maximumEssais Faire
 			lectureEtValidation
 			nombreEssais++
 			analyseEtAffichage
 		FinTantQue
 		
+		//Fin du jeu
 		Si nombreEssais == maximumEssais Alors
 			écrire "Vous avez dépassé le nombre d'essais ! La bonne réponse était " + sequence
 		FinSi
@@ -66,6 +71,7 @@ Début
 			écrire "Bravo ! Vous avez trouvé en " + nombreEssais + " essais."
 		FinSi
 		
+		//Suite
 		écrire "Voulez-vous recommencer ? O/N"
 		lire choixRecommencer
 		
@@ -79,8 +85,10 @@ Début
 //Génération de la séquence
 	Fonction generationSequence
 		choix <- "ABCDEFGH"
+		sequence <- ""
 		longueur_choix <- nb_lettre(choix)
 		
+		//Gétnération des caracteres
 		nombre1 <- aléatoire(0, longueur_choix - 1)
 		nombre2 <- 0
 		TantQue nombre2 == nombre1 Faire
@@ -95,22 +103,27 @@ Début
 			nombre4 <- aléatoire(0, longueur_choix - 1)
 		FinTantQue
 		
-		sequence <- caractèreA(choix, nombre1) & caractèreA(choix, nombre2) & caractèreA(choix, nombre3) & caractèreA(choix, nombre4)
+		//Création de la sequence
+		sequence <- caractèreA(choix, nombre1) + caractèreA(choix, nombre2) + caractèreA(choix, nombre3) + caractèreA(choix, nombre4)
+		
 	FinFonction
 
 //Lecture et validation de la proposition du joueur
 	Fonction lectureEtValidation
 	
-		Tableau caracteres_proposition(4) : caractère
-	
-		proposition <- a
+		proposition <- ""
 		redemander <- vrai
 		compteur1 <- 0
 		compteur2 <- 0
 		
+		
+		écrire "Proposez quartre lettres différentes entre A et H."
+		écrire "Il vous reste " + maximumEssais - nombreEssais + " tentatives."
+		
+		
+		//Lecture de la proposition jusqu'à ce qu'elle corresponde aux critères
 		TantQue redemander Faire
-			écrire "Proposez quartre lettres différentes entre A et H."
-			écrire "Il vous reste " + maximumEssais - nombreEssais + " tentatives."
+
 			écrire "Quelle est votre proposition ?" 
 			lire proposition
 	
@@ -124,18 +137,11 @@ Début
 				enMajuscule(proposition)
 			FinSi
 			
-			//Tranfert dans le tableau
+			//Test longueur et doublons
 			Si !redemander Alors
 				Pour compteur1 de 0 à 3
-					caracteres_proposition[compteur1] <- caractèreA(proposition, compteur1)
-				FinPour
-			FinSi
-			
-			Si !redemander Alors
-				Pour compteur1 de 0 à 3
-				
 					//Test si c'est entre A et H
-					Si(caracteres_proposition[compteur1] < A ou caracteres_proposition[compteur1] > H) Alors
+					Si(caractèreA(proposition, compteur1) < A ou caractèreA(proposition, compteur1) > H) Alors
 						redemander <- vrai
 						écrire "Tous les caractères ne sont pas compris entre A et H"
 					FinSi
@@ -143,13 +149,12 @@ Début
 					//Test de doublon
 					Pour compteur2 de 0 à 3
 						Si compteur1 != compteur2 Alors
-							Si caracteres_proposition[compteur1] == caracteres_proposition[compteur2] Alors
+							Si caractèreA(proposition, compteur1) == caractèreA(proposition, compteur2) Alors
 								redemander <- vrai
 								écrire "Certaines lettres sont en double"
 							FinSi
 						FinSi
 					FinPour
-					
 				FinPour
 			FinSi
 		FinTantQue
@@ -199,7 +204,7 @@ Début
 		Sinon
 			compteur1 <- 0
 			Pour compteur1 de 0 à nombreEssais - 1 Faire 
-				écrire "Essai" + nombreEssais + ": " + tentatives[nombreEssais - 1] [0] + " - " + tentatives[nombreEssais - 1] [1]
+				écrire "Essai " + nombreEssais + ": " + tentatives[nombreEssais - 1] [0] + " - " + tentatives[nombreEssais - 1] [1]
 			FinPour
 	
 			écrire "Voulez vous continuer ? O/N"
@@ -211,7 +216,3 @@ Début
 		
 	FinFonction	
 
-	
-	
-	
-	

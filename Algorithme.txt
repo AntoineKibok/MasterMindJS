@@ -19,6 +19,8 @@ Variable
 	proposition : chaîne de caractères
 	redemander : booléen
 	compteur1, compteur2 : entier
+	
+Tableau tentatives[6][0] : chaîne de caractères
 
 //Affichage du résultat
 Variable
@@ -55,7 +57,7 @@ Début
 		FinSi
 		
 		Si victoire Alors
-			écrire "Bravo ! Vous avez trouvé en " + essais + " essais."
+			écrire "Bravo ! Vous avez trouvé en " + nombreEssais + " essais."
 		FinSi
 		
 		écrire "Voulez-vous recommencer ? O/N"
@@ -193,7 +195,11 @@ Début
 				indications <- indications + "Orange "
 			FinSi
 		FinPour
-	
+		
+		//Ajout dans le tableau de tentatives
+		tentatives[nombreEssais - 1] [0] <- proposition
+		tentatives[nombreEssais - 1] [1] <- indications
+		
 		Si lettre_juste == 4 Alors
 			continuer <- faux
 			victoire <- vrai
@@ -201,10 +207,14 @@ Début
 		
 		//Affichage des résultat
 		Sinon
-			écrire proposition + " - " + indications
+			compteur1 <- 0
+			Pour compteur1 de 0 à nombreEssais - 1 Faire 
+				écrire "Essai" + nombreEssais + ": " + tentatives[nombreEssais - 1] [0] + " - " + tentatives[nombreEssais - 1] [1]
+			FinPour
+	
 			écrire "Voulez vous continuer ? O/N"
 			lire choixContinuer
-			Si !choixContinuer Alors
+			Si choixContinuer == "N" Alors
 				continuer <- faux
 			FinSi
 		FinSi

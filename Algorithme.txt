@@ -1,3 +1,13 @@
+//////////
+// A NE PAS OUBLIER
+// VICTOIRE -> Tant que ? Gérer le retour à Lecture...
+// NOMBRE D'ESSAIS -> Compter
+// GARDER EN MEMOIRE LES CHOIX ET RESULTATS -> Tableau dans tableau ? :skull:
+// 
+// 
+//////////
+
+
 // Génération de la séquence
 Variable 
 	sequence, choix : chaîne de caractères
@@ -10,9 +20,14 @@ Variable
 	redemander : booléen
 	compteur1, compteur2 : entier
 
-Tableau
-	caracteres_proposition(4) : caractère
-	
+Tableau caracteres_proposition(4) : caractère
+
+//Analyse de la proposition du joueur
+Variable 
+	lettre_juste : entier
+	victoire : booléen
+
+Tableau resultat_brut() : entier
 	
 Début
 //Génération de la séquence
@@ -59,7 +74,7 @@ Début
 		//Tranfert dans tableau
 		Si !redemander alors
 			Pour compteur1 de 0 à 3
-				caracteres_proposition[compteur1] <- caractèreA(proposition, compteur)
+				caracteres_proposition[compteur1] <- caractèreA(proposition, compteur1)
 			FinPour
 		FinSi
 		
@@ -75,7 +90,7 @@ Début
 				//Test de doublon
 				Pour compteur2 de 0 à 3
 					Si compteur1 != compteur2 alors
-						Si caracteres_proposition[compteur1] = caracteres_proposition[compteur2] alors
+						Si caracteres_proposition[compteur1] == caracteres_proposition[compteur2] alors
 							redemander <- vrai
 							écrire "Certaines lettres sont en double"
 						FinSi
@@ -86,12 +101,32 @@ Début
  		FinSi
 	FinTantQue
 	
+// Analyse de la proposition du joueur
 	
+	compteur1 <- 0
+	lettre_juste <- 0
 	
+	//Juste et bien placé -> "1" dans le tableau brut
+	Pour compteur1 de 0 à 3
+		Si caractèreA(proposition,compteur1) == caractèreA(sequence,compteur1) alors
+			lettre_juste++
+			resultat_brut[taille(resultat_brut)] <- 1
+		FinSi
+	FinPour
 	
-	
-	
-	
+	//Juste et mal placé -> "2" dans le tableau brut
+	compteur1 <- 0
+	compteur2 <- 0
+	Pour compteur1 de 0 à 3
+		Pour Compteur2 de 0 à 3
+			Si(compteur1 != compteur2) alors
+				Si caractèreA(proposition,compteur1) == caractèreA(sequence,compteur2) alors
+					resultat_brut[taille(resultat_brut)] <- 2
+				FinSi
+			FinSi
+		FinPour
+	FinPour
+
 	
 	
 	

@@ -16,7 +16,7 @@ Variable
 // Génération de la séquence
 Variable 
 	sequence, choix : chaîne de caractères
-	nombre1, nombre2, nombre3, nombre4: caractère
+	caractère_temporaire, nombre1, nombre2, nombre3, nombre4: caractère
 	longueur_choix : entier
 
 // Lecture proposition du joueur 	
@@ -60,15 +60,15 @@ Début
 		
 		//Fin du jeu
 		Si nombreEssais == maximumEssais Alors
-			écrire "Vous avez dépassé le nombre d'essais ! La bonne réponse était " + sequence
+			écrire "Vous avez dépassé le nombre d'essais ! La bonne réponse était " & sequence
 		FinSi
 		
 		Si choixContinuer == "N" Alors
-			écrire "Vous avez abandonné ! La bonne réponse était " + sequence
+			écrire "Vous avez abandonné ! La bonne réponse était " & sequence
 		FinSi
 		
 		Si victoire Alors
-			écrire "Bravo ! Vous avez trouvé en " + nombreEssais + " essais."
+			écrire "Bravo ! Vous avez trouvé en " & nombreEssais & " essais."
 		FinSi
 		
 		//Suite
@@ -86,7 +86,27 @@ Début
 	Fonction generationSequence
 		choix <- "ABCDEFGH"
 		sequence <- ""
+		caractère_temporaire <- ""
 		longueur_choix <- nb_lettre(choix)
+		
+		identique : booléen
+		 
+		compteur1 <- 0
+		Pour compteur1 de 0 à 3 Faire
+			TantQue identique Faire
+				identique <- faux
+				caractère_temporaire <- caractèreA(choix, aléatoire(0, longueur_choix - 1)
+				compteur2 <- 0
+				Pour compteur2 de 0 à nb_lettre(sequence - 1) Faire
+					identique <- caractère_temporaire == caractèreA(sequence, compteur2)
+				FinPour
+			FinTantQue
+			sequence <- sequence & caractère_temporaire
+		FinPour
+			
+			
+			
+			
 		
 		//Gétnération des caracteres
 		nombre1 <- aléatoire(0, longueur_choix - 1)
@@ -104,7 +124,7 @@ Début
 		FinTantQue
 		
 		//Création de la sequence
-		sequence <- caractèreA(choix, nombre1) + caractèreA(choix, nombre2) + caractèreA(choix, nombre3) + caractèreA(choix, nombre4)
+		sequence <- caractèreA(choix, nombre1) & caractèreA(choix, nombre2) & caractèreA(choix, nombre3) & caractèreA(choix, nombre4)
 		
 	FinFonction
 
@@ -118,7 +138,7 @@ Début
 		
 		
 		écrire "Proposez quartre lettres différentes entre A et H."
-		écrire "Il vous reste " + maximumEssais - nombreEssais + " tentatives."
+		écrire "Il vous reste " & maximumEssais - nombreEssais & " tentatives."
 		
 		
 		//Lecture de la proposition jusqu'à ce qu'elle corresponde aux critères
@@ -171,7 +191,7 @@ Début
 		Pour compteur1 de 0 à 3
 			Si caractèreA(proposition,compteur1) == caractèreA(sequence,compteur1) Alors
 				lettres_justes++
-				indications <- indications + "Vert "
+				indications <- indications & "Vert "
 			FinSi
 		FinPour
 		
@@ -182,7 +202,7 @@ Début
 			Pour compteur2 de 0 à 3
 				Si(compteur1 != compteur2) Alors
 					Si caractèreA(proposition,compteur1) == caractèreA(sequence,compteur2) Alors
-						indications <- indications + "Orange "
+						indications <- indications & "Orange "
 					FinSi
 				FinSi
 			FinPour
@@ -204,7 +224,7 @@ Début
 		Sinon
 			compteur1 <- 0
 			Pour compteur1 de 0 à nombreEssais - 1 Faire 
-				écrire "Essai " + nombreEssais + ": " + tentatives[nombreEssais - 1] [0] + " - " + tentatives[nombreEssais - 1] [1]
+				écrire "Essai " & nombreEssais & ": " & tentatives[nombreEssais - 1] [0] & " - " & tentatives[nombreEssais - 1] [1]
 			FinPour
 	
 			écrire "Voulez vous continuer ? O/N"

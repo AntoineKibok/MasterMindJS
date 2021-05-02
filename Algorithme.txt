@@ -24,7 +24,7 @@ Tableau tentatives[6][0] : chaîne de caractères
 
 //Affichage du résultat
 Variable
-	lettre_juste : entier
+	lettres_justes : entier
 	indications : chaîne de caractères
 	victoire : booléen
 	choixContinuer : caractère
@@ -38,9 +38,15 @@ Variable
 Début
 	Fonction nouvellePartie
 		generationSequence
+		
 		continuer <- vrai
 		nombreEssais <- 0
 		maximumEssais <- 7
+		
+		//Reset des réponses en cas de restart
+		Tableau tentativesVide[6][0] : chaîne de caractères
+		tentatives <- tentativesVide
+
 		
 		TantQue continuer == vrai et nombreEssais < maximumEssais Faire
 			lectureEtValidation
@@ -152,55 +158,39 @@ Début
 // Analyse de la proposition du joueur
 	Fonction analyseEtAffichage
 	
-		Tableau resultat_brut() : entier
-		compteur1 <- 0
+		lettres_justes <- 0
+		indications <- ""
 	
-		//Juste et bien placé -> "1" dans le tableau brut
+		//Traitement des bonnes réponses
+		compteur1 <- 0
 		Pour compteur1 de 0 à 3
 			Si caractèreA(proposition,compteur1) == caractèreA(sequence,compteur1) Alors
-				resultat_brut[taille(resultat_brut)] <- 1
+				lettres_justes++
+				indications <- indications + "Vert "
 			FinSi
 		FinPour
 		
-		//Juste et mal placé -> "2" dans le tableau brut
+		//Traitement des bonnes réponses mal placées
 		compteur1 <- 0
 		compteur2 <- 0
 		Pour compteur1 de 0 à 3
 			Pour compteur2 de 0 à 3
 				Si(compteur1 != compteur2) Alors
 					Si caractèreA(proposition,compteur1) == caractèreA(sequence,compteur2) Alors
-						resultat_brut[taille(resultat_brut)] <- 2
+						indications <- indications + "Orange "
 					FinSi
 				FinSi
 			FinPour
 		FinPour
 	
-		//Affichage des résultats
-		
-		//Création de la chaîne de caractère
-		compteur1 <- 0
-		lettre_juste <- 0
-		indications <- ""
-		
-		Pour compteur1 de 0 à taille(resultat_brut) - 1
-			Si resultat_brut[compteur1] == 1 Alors
-				lettre_juste++
-				indications <- indications + "Vert "
-			FinSi
-		FinPour
-		
-		compteur1 <- 0
-		Pour compteur1 de 0 à taille(resultat_brut) - 1
-			Si resultat_brut[compteur1] == 2 Alors
-				indications <- indications + "Orange "
-			FinSi
-		FinPour
 		
 		//Ajout dans le tableau de tentatives
 		tentatives[nombreEssais - 1] [0] <- proposition
 		tentatives[nombreEssais - 1] [1] <- indications
 		
-		Si lettre_juste == 4 Alors
+		
+		//Victoire
+		Si lettres_justes == 4 Alors
 			continuer <- faux
 			victoire <- vrai
 		FinSi

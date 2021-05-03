@@ -5,6 +5,8 @@
   <title>Master Mind, le jeu</title>
 </head>
 <body>
+
+	<h1>Le super Master Mind de la mort</h1>
 	<input type="button" onclick="return nouvelle_partie()" value="Nouvelle partie">
 	
 	<!-- affiche les précédentes propositions et leur résultat -->
@@ -22,13 +24,39 @@
 	<script>
 		//déclaration des accès aux éléments HTML
 		
+		//Variables
+		//Nouvelle partie
+		let nombreEssais, maximumEssais;
+		let continuer, choixRecommencer;
+		
+		// Génération de la séquence
+		let sequence, choix;
+		let caractère_temporaire, nombre1, nombre2, nombre3, nombre4;
+		let identique;
+		
+		// Lecture proposition du joueur 	
+		let proposition;
+		let redemander;
+		let compteur1;
+		
+		//Tableau a deux dimensions
+		let tentatives[];
+		
+		//Affichage du résultat
+		let lettres_justes;
+		let indication;
+		let victoire;
+		let choixContinuer;
+	
+
+		
 		//TEMP : affecter un contenu
-		document.getElementById("precedente_proposition").innerHTML = "ici les précédentes propositions";
+		document.getElementById("precedente_proposition").innerHTML = "Ici les précédentes propositions";
 		document.getElementById("conclusion").innerHTML = "Proposez une séquence";
 		
 		//TEMP : lire un contenu
 		let mot = document.getElementById("mot").innerHTML;
-		console.log("ce qu'il y a dans mot actuellement : " + mot);
+		console.log("Ce qu'il y a dans mot actuellement : " + mot);
 		
 		//TEMP : modifier un contenu
 		document.getElementById("mot").innerHTML = "--E---";
@@ -60,8 +88,161 @@
 				//l'utilisateur souhaite commencer une nouvelle partie
 			}
 		}
+		
+		
+		function nouvellePartie(){
+		
+			generationSequence();
+			
+			continuer = vrai;
+			nombreEssais = 0;
+			maximumEssais = 7;
+			
+			//Reset des réponses en cas de restart
+			var tentativesVide[];
+			tentatives = tentativesVide;
+	
+			//Partie en cours
+			while(continuer && nombreEssais < maximumEssais){
+				lectureEtValidation();
+				nombreEssais++;
+				analyseEtAffichage();
+			}
+			
+			//Fin du jeu
+			if(nombreEssais == maximumEssais){
+				alert("Vous avez dépassé le nombre d'essais ! La bonne réponse était " + sequence);
+			}
+			if(choixContinuer == "N"){
+				alert("Vous avez abandonné ! La bonne réponse était " + sequence);
+			}
+			if(victoire){
+				alert("Bravo ! Vous avez trouvé en " + nombreEssais + " essais.");
+			}
+			
+			//Suite 
+			choixRecommencer = prompt("Voulez-vous recommencer ? O/N");
+			
+			if(choixRecommencer == "O"){
+				return nouvellePartie();
+			}
+		}
+		
+		function generationSequence()
+		{
+			choix = "ABCDEFGH";
+			sequence = "";
+			caractère_temporaire = "";
+	
+			//Boucle pour faire les 4 lettres
+			for(compteur1 = 0; compteur1 < 4; compteur1++){
+				//Recommencer si c'est déja dans la séquence
+				do{
+					identique = false;
+					caractère_temporaire = choix.charAt(Math.floor(Math.random() * choix.length - 1));
+					
+					compteur2 = 0;
+					for(compteur2 = 0; compteur2 < sequence.length; compteur2++){
+						identique = caractère_temporaire == sequence.charAt(compteur2);
+					}
+				}while(identique);
+				sequence = sequence + caractère_temporaire;
+			}
+		}
+		
+		function lectureEtValidation()
+		{
+			proposition = "";
+			redemander = false;
+			
+			alert("Proposez quartre lettres différentes entre A et H.");
+			alert("Il vous reste " + maximumEssais - nombreEssais + " tentatives.");
+			
+			
+			//Lecture de la proposition jusqu'à ce qu'elle corresponde aux critères
+			while(redemander){ 
+				proposition = prompt("Quelle est votre proposition ?");
+		
+				//Test longueur et transformation en majucules
+				if(proposition.length != 4){
+					redemander = true;
+					alert("Il y a plus ou moins de 4 lettres.");
+				}
+				
+				if(!redemander){
+					proposition.toUpperCase();
+				}
+				
+				//Test longueur et doublons
+				if(!redemander){
+					for(compteur1 = 0; compteur1 < 4; compteur1++){
+						//Test si c'est entre A et H
+						if(proposition.charAt(compteur1) < A ou proposition.charAt(compteur1) > H){
+							redemander = true;
+							alert("Tous les caractères ne sont pas compris entre A et H");
+						}
+						//Test de doublon
+						for(compteur2 = 0; compteur2 < 4; compteur2++){
+							if(compteur1 != compteur2){
+								if(proposition.charAt(compteur1) == proposition.charAt(compteur2){
+									redemander = true;
+									alert("Certaines lettres sont en double");
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		// Analyse de la proposition du joueur
+		function analyseEtAffichage()
+		{
+			lettres_justes = 0;
+			indication = "";
+		
+			//Traitement des bonnes réponses
+			for(compteur1 = 0; compteur1 < 4; compteur1++){
+				if(proposition.charAt(compteur1) == sequence.charAt(compteur1)){
+					lettres_justes++;
+					indication = indication + "Vert ";
+				}
+			}
+			
+			//Traitement des bonnes réponses mal placées
+			for(compteur1 = 0; compteur1 < 4; compteur1++){
+				for(compteur2 = 0; compteur2 < 4; compteur2++){
+					if(compteur1 != compteur2){
+						if(proposition.charAt(compteur1) == sequence.charAt(compteur2)){
+							indication = indication + "Orange ";
+						}
+					}
+				}
+			}
+			
+			//Ajout dans le tableau de tentatives
+			tentatives.push([proposition,indication]);
+			
+			//Victoire
+			if(lettres_justes == 4){
+				continuer = false;
+				victoire = true;
+			}
+
+			//Affichage des résultat
+			else{
+				for(compteur1=0; compteur < nombreEssais - 1; compteur1++){
+					alert("Essai " + nombreEssais + ": " + tentatives[compteur1][0] + " - " + tentatives[compteur1][1];
+				}
+		
+				choixContinuer = prompt("Voulez vous continuer ? O/N");
+				if(choixContinuer == "N"){
+					continuer = false;
+				}
+			}	
+		}	
+	
+	
 	</script>
-
-
 </body>
 </html>

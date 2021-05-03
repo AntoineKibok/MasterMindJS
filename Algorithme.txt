@@ -31,7 +31,7 @@ Tableau tentatives[6][0] : chaîne de caractères
 //Affichage du résultat
 Variable
 	lettres_justes : entier
-	indications : chaîne de caractères
+	indication : chaîne de caractères
 	victoire : booléen
 	choixContinuer : caractère
 	
@@ -132,7 +132,7 @@ Début
 	Fonction lectureEtValidation
 	
 		proposition <- ""
-		redemander <- vrai
+		redemander <- faux
 		compteur1 <- 0
 		compteur2 <- 0
 		
@@ -159,7 +159,7 @@ Début
 			
 			//Test longueur et doublons
 			Si !redemander Alors
-				Pour compteur1 de 0 à 3
+				Pour compteur1 de 0 à 3 Faire
 					//Test si c'est entre A et H
 					Si(caractèreA(proposition, compteur1) < A ou caractèreA(proposition, compteur1) > H) Alors
 						redemander <- vrai
@@ -167,7 +167,7 @@ Début
 					FinSi
 					
 					//Test de doublon
-					Pour compteur2 de 0 à 3
+					Pour compteur2 de 0 à 3 Faire
 						Si compteur1 != compteur2 Alors
 							Si caractèreA(proposition, compteur1) == caractèreA(proposition, compteur2) Alors
 								redemander <- vrai
@@ -184,25 +184,25 @@ Début
 	Fonction analyseEtAffichage
 	
 		lettres_justes <- 0
-		indications <- ""
+		indication <- ""
 	
 		//Traitement des bonnes réponses
 		compteur1 <- 0
-		Pour compteur1 de 0 à 3
+		Pour compteur1 de 0 à 3 Faire
 			Si caractèreA(proposition,compteur1) == caractèreA(sequence,compteur1) Alors
 				lettres_justes++
-				indications <- indications & "Vert "
+				indication <- indication & "Vert "
 			FinSi
 		FinPour
 		
 		//Traitement des bonnes réponses mal placées
 		compteur1 <- 0
 		compteur2 <- 0
-		Pour compteur1 de 0 à 3
-			Pour compteur2 de 0 à 3
+		Pour compteur1 de 0 à 3 Faire
+			Pour compteur2 de 0 à 3 Faire
 				Si(compteur1 != compteur2) Alors
 					Si caractèreA(proposition,compteur1) == caractèreA(sequence,compteur2) Alors
-						indications <- indications & "Orange "
+						indication <- indication & "Orange "
 					FinSi
 				FinSi
 			FinPour
@@ -211,7 +211,7 @@ Début
 		
 		//Ajout dans le tableau de tentatives
 		tentatives[nombreEssais - 1] [0] <- proposition
-		tentatives[nombreEssais - 1] [1] <- indications
+		tentatives[nombreEssais - 1] [1] <- indication
 		
 		
 		//Victoire
@@ -224,7 +224,7 @@ Début
 		Sinon
 			compteur1 <- 0
 			Pour compteur1 de 0 à nombreEssais - 1 Faire 
-				écrire "Essai " & nombreEssais & ": " & tentatives[nombreEssais - 1] [0] & " - " & tentatives[nombreEssais - 1] [1]
+				écrire "Essai " & nombreEssais & ": " & tentatives[compteur1] [0] & " - " & tentatives[compteur1] [1]
 			FinPour
 	
 			écrire "Voulez vous continuer ? O/N"

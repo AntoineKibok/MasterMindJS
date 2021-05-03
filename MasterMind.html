@@ -38,9 +38,7 @@
 		let proposition;
 		let redemander;
 		let compteur1;
-		
-		//Tableau a deux dimensions
-		let tentatives[];
+		let tentatives;
 		
 		//Affichage du résultat
 		let lettres_justes;
@@ -99,7 +97,7 @@
 			maximumEssais = 7;
 			
 			//Reset des réponses en cas de restart
-			var tentativesVide[];
+			var tentativesVide;
 			tentatives = tentativesVide;
 	
 			//Partie en cours
@@ -177,14 +175,14 @@
 				if(!redemander){
 					for(compteur1 = 0; compteur1 < 4; compteur1++){
 						//Test si c'est entre A et H
-						if(proposition.charAt(compteur1) < A ou proposition.charAt(compteur1) > H){
+						if(proposition.charAt(compteur1) < A || proposition.charAt(compteur1) > H){
 							redemander = true;
 							alert("Tous les caractères ne sont pas compris entre A et H");
 						}
 						//Test de doublon
 						for(compteur2 = 0; compteur2 < 4; compteur2++){
 							if(compteur1 != compteur2){
-								if(proposition.charAt(compteur1) == proposition.charAt(compteur2){
+								if(proposition.charAt(compteur1) == proposition.charAt(compteur2)){
 									redemander = true;
 									alert("Certaines lettres sont en double");
 								}
@@ -232,7 +230,7 @@
 			//Affichage des résultat
 			else{
 				for(compteur1=0; compteur < nombreEssais - 1; compteur1++){
-					alert("Essai " + nombreEssais + ": " + tentatives[compteur1][0] + " - " + tentatives[compteur1][1];
+					alert("Essai " + nombreEssais + ": " + tentatives[compteur1][0] + " - " + tentatives[compteur1][1]);
 				}
 		
 				choixContinuer = prompt("Voulez vous continuer ? O/N");

@@ -20,6 +20,7 @@
 
 	<!-- affiche si c'est gagné ou perdu -->
 	<p id="conclusion"></p>
+	<p id="mot"></p>
 
 	<script>
 		//déclaration des accès aux éléments HTML
@@ -51,7 +52,7 @@
 		//TEMP : affecter un contenu
 		document.getElementById("precedente_proposition").innerHTML = "Ici les précédentes propositions";
 		document.getElementById("conclusion").innerHTML = "Proposez une séquence";
-		
+				
 		//TEMP : lire un contenu
 		let mot = document.getElementById("mot").innerHTML;
 		console.log("Ce qu'il y a dans mot actuellement : " + mot);
@@ -137,7 +138,7 @@
 				//Recommencer si c'est déja dans la séquence
 				do{
 					identique = false;
-					caractère_temporaire = choix.charAt(Math.floor(Math.random() * choix.length - 1));
+					caractère_temporaire = choix.charAt(Math.floor(Math.random() * choix.length));
 					
 					compteur2 = 0;
 					for(compteur2 = 0; compteur2 < sequence.length; compteur2++){
@@ -145,6 +146,7 @@
 					}
 				}while(identique);
 				sequence = sequence + caractère_temporaire;
+				document.getElementById("precedente_proposition").innerHTML = sequence;
 			}
 		}
 		

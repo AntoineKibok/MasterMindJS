@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Master Mind, le jeu</title>
+</head>
+<body>
+	<input type="button" onclick="return nouvelle_partie()" value="Nouvelle partie">
+	
+	<!-- affiche les précédentes propositions et leur résultat -->
+	<p id="precedente_proposition"></p>
+	
+	<!-- affiche les lettres proposées par l'utilisateur -->
+	<p id="proposition"></p>
+	
+	<!-- permet à l'utilisateur de proposer une lettre -->
+	<input type="button" onclick="return proposer()" value="Proposer">
+
+	<!-- affiche si c'est gagné ou perdu -->
+	<p id="conclusion"></p>
+
+	<script>
+		//déclaration des accès aux éléments HTML
+		
+		//TEMP : affecter un contenu
+		document.getElementById("precedente_proposition").innerHTML = "ici les précédentes propositions";
+		document.getElementById("conclusion").innerHTML = "Proposez une séquence";
+		
+		//TEMP : lire un contenu
+		let mot = document.getElementById("mot").innerHTML;
+		console.log("ce qu'il y a dans mot actuellement : " + mot);
+		
+		//TEMP : modifier un contenu
+		document.getElementById("mot").innerHTML = "--E---";
+		
+		//gère une nouvelle proposition de l'utilisateur
+		function proposer() 
+		{
+			// l'utilisateur propose une séquence
+			let sequence = prompt("Votre proposition : ");
+			let resultat = '';
+			
+			//------------ votre code doit figurer ci-dessous
+			
+			//TEMP : exemple d'instruction
+			document.getElementById("proposition").innerHTML = sequence + " > " + resultat;
+			
+			
+			
+			//------------ fin votre code avant ce commentaire
+			return false;
+		}
+		
+		//gère la création d'une nouvelle partie
+		function nouvelle_partie() 
+		{
+			let choix = confirm("Commencer une nouvelle partie ?");
+			if (choix)
+			{
+				//l'utilisateur souhaite commencer une nouvelle partie
+			}
+		}
+	</script>
+
+
+</body>
+</html>

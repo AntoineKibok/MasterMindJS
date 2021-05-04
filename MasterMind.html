@@ -10,13 +10,14 @@
 <body>
 
 	<h1>Le super Master Mind de la mort</h1>
-	<input type="button" onclick="return nouvelle_partie()" value="Nouvelle partie">
-		
-	<!-- affiche les règles -->
-	<p id="instructions"></p>
+	<input type="button" id="bouton_lancer" onclick="return nouvelle_partie()" value="Nouvelle partie">
+
 	
 	<!-- affiche le nombre d'essais restant -->
 	<p id="essais_restants"></p>
+	
+	<!-- affiche les règles -->
+	<p id="instructions"></p>
 	
 	<!-- affiche les précédentes propositions et leur résultat -->
 	<p id="precedente_proposition"></p>
@@ -65,7 +66,8 @@
 			//let choix = confirm("Commencer une nouvelle partie ?");
 			//if (choix)
 			//{
-
+				
+				document.getElementById('bouton_lancer').value = "Recommencer";
 				generationSequence();
 				continuer = true;
 				nombreEssais = 0;
@@ -253,18 +255,20 @@
 			document.getElementById("essais_restants").innerHTML = "Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
 			document.getElementById("precedente_proposition").innerHTML = precedentesPropositions;
 			document.getElementById("proposition").innerHTML = proposition + " -> " + indication;
-			
 			precedentesPropositions = precedentesPropositions + proposition + " -> " + indication + "<br>";
 			
 			
 			//Gestion de la victoire
 			if(lettresJustes == 4){
 				document.getElementById("proposition").innerHTML = proposition + " -> " + indication + "<br>" + "Vous avez gagné, bravo !";
+				document.getElementById('bouton_lancer').value = "Nouvelle partie";
+				document.getElementById("bouton_proposer").style.visibility='hidden';
 			}
 			
 			//Gestion de la défaite
 			if(maximumEssais - nombreEssais == 0){
 				document.getElementById("bouton_proposer").style.visibility='hidden';
+				document.getElementById('bouton_lancer').value = "Nouvelle partie";
 				document.getElementById("proposition").innerHTML = proposition + " -> " + indication + "<br>" + "Vous avez perdu, désolé ! La bonne réponse était " + sequence;
 			}
 		}	

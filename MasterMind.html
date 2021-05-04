@@ -25,7 +25,7 @@
 	<p id="proposition"></p>
 	
 	<!-- permet à l'utilisateur de proposer une lettre -->
-	<input type="button" onclick="return proposer()" value="Proposer">
+	<input type="button" id="bouton_proposer" onclick="return proposer()" value="Proposer">
 
 	<!-- affiche si c'est gagné ou perdu -->
 	<p id="conclusion"></p>
@@ -56,6 +56,8 @@
 		let indication;
 		let victoire;
 		let choixContinuer;
+		
+		document.getElementById("bouton_proposer").style.visibility='hidden';
 	
 
 		function nouvelle_partie() 
@@ -64,17 +66,18 @@
 			//if (choix)
 			//{
 
+				generationSequence();
 				continuer = true;
 				nombreEssais = 0;
 				maximumEssais = 7;
 				console.log("OK " + sequence);
 				precedentesPropositions = "";
-				
+
 				document.getElementById("instructions").innerHTML = "Proposez quartre lettres différentes entre A et H.";
 				document.getElementById("essais_restants").innerHTML = "Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
 				document.getElementById("precedente_proposition").innerHTML = "";
 				document.getElementById("proposition").innerHTML = "";
-				generationSequence();
+				document.getElementById("bouton_proposer").style.visibility='visible';
 				//l'utilisateur souhaite commencer une nouvelle partie
 			//}
 		}
@@ -158,54 +161,11 @@
 			else{
 				return analyseEtAffichage();
 			}
-		
-			
-			//------------ votre code doit figurer ci-dessous
-			
-			//TEMP : exemple d'instruction
-			document.getElementById("proposition").innerHTML = proposition + " > " + "resultat";
-			
-			
-			
-			//------------ fin votre code avant ce commentaire
 			return false;
 		}
 		
 		//gère la création d'une nouvelle partie
 		
-		
-		function nouvellePartie(){
-		
-
-			
-			//Reset des réponses en cas de restart
-
-	
-			//Partie en cours
-			while(continuer && nombreEssais < maximumEssais){
-				lectureEtValidation();
-				nombreEssais++;
-				analyseEtAffichage();
-			}
-			
-			//Fin du jeu
-			if(nombreEssais == maximumEssais){
-				alert("Vous avez dépassé le nombre d'essais ! La bonne réponse était " + sequence);
-			}
-			if(choixContinuer == "N"){
-				alert("Vous avez abandonné ! La bonne réponse était " + sequence);
-			}
-			if(victoire){
-				alert("Bravo ! Vous avez trouvé en " + nombreEssais + " essais.");
-			}
-			
-			//Suite 
-			choixRecommencer = prompt("Voulez-vous recommencer ? O/N");
-			
-			if(choixRecommencer == "O"){
-				return nouvellePartie();
-			}
-		}
 
 		
 		function lectureEtValidation()
@@ -285,25 +245,28 @@
 			for(compteur1 = lettresTrouves; compteur1 < 4; compteur1++){
 				indication = indication + "&#9899;";
 			}
-	
 
 			//Affichage des résultat
 			
 			nombreEssais++;
 			
 			document.getElementById("essais_restants").innerHTML = "Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
-
 			document.getElementById("precedente_proposition").innerHTML = precedentesPropositions;
-			
 			document.getElementById("proposition").innerHTML = proposition + " -> " + indication;
 			
 			precedentesPropositions = precedentesPropositions + proposition + " -> " + indication + "<br>";
 			
+			
+			//Gestion de la victoire
 			if(lettresJustes == 4){
 				document.getElementById("proposition").innerHTML = proposition + " -> " + indication + "<br>" + "Vous avez gagné, bravo !";
 			}
-
-
+			
+			//Gestion de la défaite
+			if(maximumEssais - nombreEssais == 0){
+				document.getElementById("bouton_proposer").style.visibility='hidden';
+				document.getElementById("proposition").innerHTML = proposition + " -> " + indication + "<br>" + "Vous avez perdu, désolé ! La bonne réponse était " + sequence;
+			}
 		}	
 	
 	

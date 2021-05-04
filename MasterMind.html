@@ -4,8 +4,6 @@
   <meta charset="utf-8">
   <title>Master Mind, le jeu</title>
   <style type="text/css">
-	p.vert { color:Chartreuse }
-	span.orange { color:Orange }
 	<!-- span.name { color:#FF0000;font-weight:bold;font-family:Tahoma;font-size:20 } -->
   </style>
 </head>
@@ -14,8 +12,11 @@
 	<h1>Le super Master Mind de la mort</h1>
 	<input type="button" onclick="return nouvelle_partie()" value="Nouvelle partie">
 		
-	<!-- affiche les précédentes propositions et leur résultat -->
+	<!-- affiche les règles -->
 	<p id="instructions"></p>
+	
+	<!-- affiche le nombre d'essais restant -->
+	<p id="essais_restants"></p>
 	
 	<!-- affiche les précédentes propositions et leur résultat -->
 	<p id="precedente_proposition"></p>
@@ -57,32 +58,23 @@
 		let choixContinuer;
 	
 
-		
-		//TEMP : affecter un contenu
-		document.getElementById("precedente_proposition").innerHTML = "Ici les précédentes propositions";
-		document.getElementById("conclusion").innerHTML = "Proposez une séquence";
-				
-		//TEMP : lire un contenu
-		let mot = document.getElementById("mot").innerHTML;
-		console.log("Ce qu'il y a dans mot actuellement : " + mot);
-		
-		//TEMP : modifier un contenu
-		document.getElementById("mot").innerHTML = "--E---";
-		
-		
 		function nouvelle_partie() 
 		{
 			//let choix = confirm("Commencer une nouvelle partie ?");
 			//if (choix)
 			//{
-				generationSequence();
+
 				continuer = true;
 				nombreEssais = 0;
 				maximumEssais = 7;
 				console.log("OK " + sequence);
 				precedentesPropositions = "";
 				
-				document.getElementById("instructions").innerHTML = "Proposez quartre lettres différentes entre A et H. <br> Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
+				document.getElementById("instructions").innerHTML = "Proposez quartre lettres différentes entre A et H.";
+				document.getElementById("essais_restants").innerHTML = "Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
+				document.getElementById("precedente_proposition").innerHTML = "";
+				document.getElementById("proposition").innerHTML = "";
+				generationSequence();
 				//l'utilisateur souhaite commencer une nouvelle partie
 			//}
 		}
@@ -121,12 +113,10 @@
 			//Lecture de la proposition jusqu'à ce qu'elle corresponde aux critères
 			var propositionTemporaire = prompt("Quelle est votre proposition ?");
 			
-			
-			console.log("Avant" + propositionTemporaire);
 			proposition=propositionTemporaire.toUpperCase(); 
-			console.log("Après" + proposition);
 			
-			//Test longueur et transformation en majucules
+			
+			//Test longueur
 			if(proposition.length != 4){
 				redemander = true;
 				console.log(proposition.length + " != 4");
@@ -296,21 +286,24 @@
 				indication = indication + "&#9899;";
 			}
 	
-			//Victoire
-			if(lettresJustes == 4){
-				continuer = false;
-				victoire = true;
-			}
 
 			//Affichage des résultat
-			else{
-				document.getElementById("precedente_proposition").innerHTML = precedentesPropositions;
-				
-				document.getElementById("proposition").innerHTML = proposition + " -> " + indication;
-				
-				precedentesPropositions = precedentesPropositions + proposition + " -> " + indication + "<br>";
+			
+			nombreEssais++;
+			
+			document.getElementById("essais_restants").innerHTML = "Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
 
-			}	
+			document.getElementById("precedente_proposition").innerHTML = precedentesPropositions;
+			
+			document.getElementById("proposition").innerHTML = proposition + " -> " + indication;
+			
+			precedentesPropositions = precedentesPropositions + proposition + " -> " + indication + "<br>";
+			
+			if(lettresJustes == 4){
+				document.getElementById("proposition").innerHTML = proposition + " -> " + indication + "<br>" + "Vous avez gagné, bravo !";
+			}
+
+
 		}	
 	
 	

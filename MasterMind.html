@@ -14,6 +14,8 @@
 	<h1>Le super Master Mind de la mort</h1>
 	<input type="button" onclick="return nouvelle_partie()" value="Nouvelle partie">
 	
+	<input type="button" onclick="return testGen()" value="Tester doublons">
+	
 	<!-- affiche les précédentes propositions et leur résultat -->
 	<p id="instructions"></p>
 	
@@ -82,12 +84,43 @@
 				console.log("OK " + sequence);
 				precedentesPropositions = "";
 				
-				document.getElementById("instructions").innerHTML = "I will display &#129409; Proposez quartre lettres différentes entre A et H. <br> Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
+				document.getElementById("instructions").innerHTML = "Proposez quartre lettres différentes entre A et H. <br> Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
 				//l'utilisateur souhaite commencer une nouvelle partie
 			//}
 		}
 		
+		function testGen(){
+			for(var i = 0; i <50	; i++){
+				generationSequence()
+				console.log(i + "  " + sequence);
+			}
+		}
 		
+		
+		function generationSequence()
+		{
+			choix = "ABCDEFGH";
+			sequence = "";
+			caractère_temporaire = "";
+			
+			//Boucle pour faire les 4 lettres
+			for(compteur1 = 0; compteur1 < 4; compteur1++){
+				identique = false;
+				//Recommencer si c'est déja dans la séquence
+				do{
+					caractère_temporaire = choix.charAt(Math.floor(Math.random() * choix.length));	
+					for(compteur2 = 0; compteur2 < sequence.length; compteur2++){
+					
+						identique = (caractère_temporaire == sequence.charAt(compteur2));
+						//Si c'est identique, regénérer, ne pas tester une autre lettre
+						if(identique){
+							break;
+						}
+					}
+				}while(identique);
+				sequence = sequence + caractère_temporaire;
+			}
+		}
 		
 		//gère une nouvelle proposition de l'utilisateur
 		function proposer() 
@@ -193,28 +226,7 @@
 				return nouvellePartie();
 			}
 		}
-		
-		function generationSequence()
-		{
-			choix = "ABCDEFGH";
-			sequence = "";
-			caractère_temporaire = "";
-	
-			//Boucle pour faire les 4 lettres
-			for(compteur1 = 0; compteur1 < 4; compteur1++){
-				//Recommencer si c'est déja dans la séquence
-				do{
-					identique = false;
-					caractère_temporaire = choix.charAt(Math.floor(Math.random() * choix.length));
-					
-					compteur2 = 0;
-					for(compteur2 = 0; compteur2 < sequence.length; compteur2++){
-						identique = caractère_temporaire == sequence.charAt(compteur2);
-					}
-				}while(identique);
-				sequence = sequence + caractère_temporaire;
-			}
-		}
+
 		
 		function lectureEtValidation()
 		{
@@ -289,19 +301,11 @@
 				}
 			}
 			
-			console.log(lettresTrouves);
-			
+			//Replissage des vides
 			for(compteur1 = lettresTrouves; compteur1 < 4; compteur1++){
-				console.log("cc");
-
 				indication = indication + "&#9899;";
 			}
-			
-			console.log(indication);
-			
-			//Ajout dans le tableau de tentatives
-			//tentatives.push([proposition,indication]);
-			
+	
 			//Victoire
 			if(lettresJustes == 4){
 				continuer = false;
@@ -310,34 +314,12 @@
 
 			//Affichage des résultat
 			else{
-				console.log("Coucou");
-				
-				
 				document.getElementById("precedente_proposition").innerHTML = precedentesPropositions;
+				
 				document.getElementById("proposition").innerHTML = proposition + " -> " + indication;
 				
 				precedentesPropositions = precedentesPropositions + proposition + " -> " + indication + "<br>";
-				
-				
-				
-				
-				
-				
-				
-				
 
-				/* let resultats_anciens;
-				for(compteur1=0; compteur1 < nombreEssais - 1; compteur1++){
-					alert("Essai " + nombreEssais + ": " + tentatives[compteur1][0] + " - " + tentatives[compteur1][1]);
-					resultats_anciens = resultats_anciens + "Essai " + nombreEssais + ": " + tentatives[compteur1][0] + " - " + tentatives[compteur1][1]+ "<br>";
-					console.log(resultats_anciens+".");
-					document.getElementById("proposition").innerHTML = resultats_anciens;
-				} */
-		
-				/* choixContinuer = prompt("Voulez vous continuer ? O/N");
-				if(choixContinuer == "N"){
-					continuer = false;
-				} */
 			}	
 		}	
 	

@@ -10,6 +10,9 @@
 	<input type="button" onclick="return nouvelle_partie()" value="Nouvelle partie">
 	
 	<!-- affiche les précédentes propositions et leur résultat -->
+	<p id="instructions"></p>
+	
+	<!-- affiche les précédentes propositions et leur résultat -->
 	<p id="precedente_proposition"></p>
 	
 	<!-- affiche les lettres proposées par l'utilisateur -->
@@ -29,6 +32,7 @@
 		//Nouvelle partie
 		let nombreEssais, maximumEssais;
 		let continuer, choixRecommencer;
+		let precedentesPropositions;
 		
 		// Génération de la séquence
 		let sequence, choix;
@@ -39,7 +43,6 @@
 		let proposition;
 		let redemander;
 		let compteur1;
-		let tentatives;
 		
 		//Affichage du résultat
 		let lettres_justes;
@@ -60,17 +63,88 @@
 		//TEMP : modifier un contenu
 		document.getElementById("mot").innerHTML = "--E---";
 		
+		
+		function nouvelle_partie() 
+		{
+			//let choix = confirm("Commencer une nouvelle partie ?");
+			//if (choix)
+			//{
+				generationSequence();
+				continuer = true;
+				nombreEssais = 0;
+				maximumEssais = 7;
+				console.log("OK " + sequence);
+				precedentesPropositions = "";
+				
+				document.getElementById("instructions").innerHTML = "Proposez quartre lettres différentes entre A et H. <br> Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
+				//l'utilisateur souhaite commencer une nouvelle partie
+			//}
+		}
+		
+		
+		
 		//gère une nouvelle proposition de l'utilisateur
 		function proposer() 
 		{
-			// l'utilisateur propose une séquence
-			let sequence = prompt("Votre proposition : ");
-			let resultat = '';
+			proposition = "";
+			redemander = false;
+			
+			//Lecture de la proposition jusqu'à ce qu'elle corresponde aux critères
+			var propositionTemporaire = prompt("Quelle est votre proposition ?");
+			
+			
+			console.log("Avant" + propositionTemporaire);
+			proposition=propositionTemporaire.toUpperCase(); 
+			console.log("Après" + proposition);
+			
+			//Test longueur et transformation en majucules
+			if(proposition.length != 4){
+				redemander = true;
+				console.log(proposition.length + " != 4");
+				alert("Il y a plus ou moins de 4 lettres.");
+			}
+			
+
+			//Test longueur et doublons
+			if(!redemander){
+				for(compteur1 = 0; compteur1 < 4; compteur1++){
+					
+					//Annuler nouveau test de doublon
+					if(redemander){
+						break;
+					}
+					//Test si c'est entre A et H
+					if(proposition.charAt(compteur1) < "A" || proposition.charAt(compteur1) > "H"){
+						redemander = true;
+						console.log(proposition.charAt(compteur1) + " bloque à première condition");
+						alert("Tous les caractères ne sont pas compris entre A et H");
+						break;
+					}
+					//Test de doublon
+					for(compteur2 = 0; compteur2 < 4; compteur2++){
+						if((compteur1 != compteur2) && (proposition.charAt(compteur1) == proposition.charAt(compteur2))){
+							redemander = true;
+							console.log(proposition.charAt(compteur1) + " bloque à deuxième condition");
+							alert("Certaines lettres sont en double");
+							break;
+						}
+					}
+
+				}
+			}
+			if(redemander){
+				console.log("Nouvelle demande");
+				return proposer()
+			}
+			else{
+				return analyseEtAffichage();
+			}
+		
 			
 			//------------ votre code doit figurer ci-dessous
 			
 			//TEMP : exemple d'instruction
-			document.getElementById("proposition").innerHTML = sequence + " > " + resultat;
+			document.getElementById("proposition").innerHTML = proposition + " > " + "resultat";
 			
 			
 			
@@ -79,27 +153,14 @@
 		}
 		
 		//gère la création d'une nouvelle partie
-		function nouvelle_partie() 
-		{
-			let choix = confirm("Commencer une nouvelle partie ?");
-			if (choix)
-			{
-				//l'utilisateur souhaite commencer une nouvelle partie
-			}
-		}
 		
 		
 		function nouvellePartie(){
 		
-			generationSequence();
-			
-			continuer = vrai;
-			nombreEssais = 0;
-			maximumEssais = 7;
+
 			
 			//Reset des réponses en cas de restart
-			var tentativesVide;
-			tentatives = tentativesVide;
+
 	
 			//Partie en cours
 			while(continuer && nombreEssais < maximumEssais){
@@ -146,7 +207,6 @@
 					}
 				}while(identique);
 				sequence = sequence + caractère_temporaire;
-				document.getElementById("precedente_proposition").innerHTML = sequence;
 			}
 		}
 		
@@ -220,8 +280,10 @@
 				}
 			}
 			
+			console.log(indication);
+			
 			//Ajout dans le tableau de tentatives
-			tentatives.push([proposition,indication]);
+			//tentatives.push([proposition,indication]);
 			
 			//Victoire
 			if(lettres_justes == 4){
@@ -231,14 +293,34 @@
 
 			//Affichage des résultat
 			else{
-				for(compteur1=0; compteur < nombreEssais - 1; compteur1++){
+				console.log("Coucou");
+				
+				
+				document.getElementById("precedente_proposition").innerHTML = precedentesPropositions;
+				document.getElementById("proposition").innerHTML = proposition + " -> " + indication;
+				
+				precedentesPropositions = precedentesPropositions + proposition + " -> " + indication + "<br>";
+				
+				
+				
+				
+				
+				
+				
+				
+
+				/* let resultats_anciens;
+				for(compteur1=0; compteur1 < nombreEssais - 1; compteur1++){
 					alert("Essai " + nombreEssais + ": " + tentatives[compteur1][0] + " - " + tentatives[compteur1][1]);
-				}
+					resultats_anciens = resultats_anciens + "Essai " + nombreEssais + ": " + tentatives[compteur1][0] + " - " + tentatives[compteur1][1]+ "<br>";
+					console.log(resultats_anciens+".");
+					document.getElementById("proposition").innerHTML = resultats_anciens;
+				} */
 		
-				choixContinuer = prompt("Voulez vous continuer ? O/N");
+				/* choixContinuer = prompt("Voulez vous continuer ? O/N");
 				if(choixContinuer == "N"){
 					continuer = false;
-				}
+				} */
 			}	
 		}	
 	

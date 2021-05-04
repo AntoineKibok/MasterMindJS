@@ -161,7 +161,7 @@ Début
 			Si !redemander Alors
 				Pour compteur1 de 0 à 3 Faire
 					//Test si c'est entre A et H
-					Si(caractèreA(proposition, compteur1) < A ou caractèreA(proposition, compteur1) > H) Alors
+					Si(caractèreA(proposition, compteur1) < "A" ou caractèreA(proposition, compteur1) > "H") Alors
 						redemander <- vrai
 						écrire "Tous les caractères ne sont pas compris entre A et H"
 					FinSi

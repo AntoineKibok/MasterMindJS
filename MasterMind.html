@@ -10,8 +10,7 @@
 <body>
 
 	<h1>Le super Master Mind de la mort</h1>
-	<input type="button" id="bouton_lancer" onclick="return nouvelle_partie()" value="Nouvelle partie">
-
+	<input type="button" id="bouton_lancer" onclick="return nouvellePartie()" value="Nouvelle partie">
 	
 	<!-- affiche le nombre d'essais restant -->
 	<p id="essais_restants"></p>
@@ -40,6 +39,7 @@
 		let nombreEssais, maximumEssais;
 		let continuer, choixRecommencer;
 		let precedentesPropositions;
+		let enJeu;
 		
 		// Génération de la séquence
 		let sequence, choix;
@@ -59,29 +59,39 @@
 		let choixContinuer;
 		
 		document.getElementById("bouton_proposer").style.visibility='hidden';
+		enJeu = false;
 	
 
-		function nouvelle_partie() 
+		function nouvellePartie() 
 		{
-			//let choix = confirm("Commencer une nouvelle partie ?");
-			//if (choix)
-			//{
-				
-				document.getElementById('bouton_lancer').value = "Recommencer";
-				generationSequence();
-				continuer = true;
-				nombreEssais = 0;
-				maximumEssais = 7;
-				console.log("OK " + sequence);
-				precedentesPropositions = "";
+			//Demande confirmation que lorsque nécessaire
+			if(enJeu){
+				let choix = confirm("Commencer une nouvelle partie ?");
+				if (choix)
+				{
+					lancementPartie();
+				}
+			}
+			else{
+				lancementPartie();
+			}
+		}
+		
+		function lancementPartie(){
+			document.getElementById('bouton_lancer').value = "Recommencer";
+			enJeu = true;
+			generationSequence();
+			continuer = true;
+			nombreEssais = 0;
+			maximumEssais = 7;
+			console.log("Solution: " + sequence);
+			precedentesPropositions = "";
 
-				document.getElementById("instructions").innerHTML = "Proposez quartre lettres différentes entre A et H.";
-				document.getElementById("essais_restants").innerHTML = "Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
-				document.getElementById("precedente_proposition").innerHTML = "";
-				document.getElementById("proposition").innerHTML = "";
-				document.getElementById("bouton_proposer").style.visibility='visible';
-				//l'utilisateur souhaite commencer une nouvelle partie
-			//}
+			document.getElementById("instructions").innerHTML = "Proposez quartre lettres parmi A B C D E F G et H";
+			document.getElementById("essais_restants").innerHTML = "Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
+			document.getElementById("precedente_proposition").innerHTML = "";
+			document.getElementById("proposition").innerHTML = "";
+			document.getElementById("bouton_proposer").style.visibility='visible';
 		}
 		
 		function generationSequence()
@@ -167,9 +177,6 @@
 		}
 		
 		//gère la création d'une nouvelle partie
-		
-
-		
 		function lectureEtValidation()
 		{
 			proposition = "";
@@ -251,15 +258,14 @@
 			//Affichage des résultat
 			
 			nombreEssais++;
-			
 			document.getElementById("essais_restants").innerHTML = "Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
 			document.getElementById("precedente_proposition").innerHTML = precedentesPropositions;
 			document.getElementById("proposition").innerHTML = proposition + " -> " + indication;
 			precedentesPropositions = precedentesPropositions + proposition + " -> " + indication + "<br>";
 			
-			
 			//Gestion de la victoire
 			if(lettresJustes == 4){
+				enJeu = false;
 				document.getElementById("proposition").innerHTML = proposition + " -> " + indication + "<br>" + "Vous avez gagné, bravo !";
 				document.getElementById('bouton_lancer').value = "Nouvelle partie";
 				document.getElementById("bouton_proposer").style.visibility='hidden';
@@ -267,13 +273,12 @@
 			
 			//Gestion de la défaite
 			if(maximumEssais - nombreEssais == 0){
+				enJeu = false;
 				document.getElementById("bouton_proposer").style.visibility='hidden';
 				document.getElementById('bouton_lancer').value = "Nouvelle partie";
 				document.getElementById("proposition").innerHTML = proposition + " -> " + indication + "<br>" + "Vous avez perdu, désolé ! La bonne réponse était " + sequence;
 			}
 		}	
-	
-	
 	</script>
 </body>
 </html>

@@ -12,8 +12,6 @@
 	<h1>Le super Master Mind de la mort</h1>
 	<input type="button" id="bouton_lancer" onclick="return nouvellePartie()" value="Nouvelle partie">
 	
-	<!-- affiche le nombre d'essais restant -->
-	<p id="essais_restants"></p>
 	
 	<!-- affiche les règles -->
 	<p id="instructions"></p>
@@ -23,6 +21,9 @@
 	
 	<!-- affiche les lettres proposées par l'utilisateur -->
 	<p id="proposition"></p>
+	
+	<!-- affiche le nombre d'essais restant -->
+	<p id="essais_restants"></p>
 	
 	<!-- permet à l'utilisateur de proposer une lettre -->
 	<input type="button" id="bouton_proposer" onclick="return proposer()" value="Proposer">
@@ -210,10 +211,21 @@
 				indication = indication + "&#9899;";
 			}
 
-			//Affichage des résultat
+			//Affichage des résultat 
 			
 			nombreEssais++;
-			document.getElementById("essais_restants").innerHTML = "Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
+			//Préparation visuelle du nombre d'essais restants
+			let essaisEmoji = "";
+			for(compteur1 = 0; compteur1 < maximumEssais; compteur1 ++){
+				if (compteur1 <= nombreEssais - 1){
+					essaisEmoji = essaisEmoji + "&#9726;";
+				}
+				else{
+					essaisEmoji = essaisEmoji + "&#9725;";
+				}
+			}
+			
+			document.getElementById("essais_restants").innerHTML = "Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.  -" + essaisEmoji + "-";
 			document.getElementById("precedente_proposition").innerHTML = precedentesPropositions;
 			document.getElementById("proposition").innerHTML = proposition + " -> " + indication;
 			precedentesPropositions = precedentesPropositions + proposition + " -> " + indication + "<br>";

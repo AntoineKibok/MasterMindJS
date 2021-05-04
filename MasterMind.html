@@ -13,9 +13,7 @@
 
 	<h1>Le super Master Mind de la mort</h1>
 	<input type="button" onclick="return nouvelle_partie()" value="Nouvelle partie">
-	
-	<input type="button" onclick="return testGen()" value="Tester doublons">
-	
+		
 	<!-- affiche les précédentes propositions et leur résultat -->
 	<p id="instructions"></p>
 	
@@ -88,14 +86,6 @@
 				//l'utilisateur souhaite commencer une nouvelle partie
 			//}
 		}
-		
-		function testGen(){
-			for(var i = 0; i <50	; i++){
-				generationSequence()
-				console.log(i + "  " + sequence);
-			}
-		}
-		
 		
 		function generationSequence()
 		{

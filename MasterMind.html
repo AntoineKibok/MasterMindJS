@@ -3,6 +3,11 @@
 <head>
   <meta charset="utf-8">
   <title>Master Mind, le jeu</title>
+  <style type="text/css">
+	p.vert { color:Chartreuse }
+	span.orange { color:Orange }
+	<!-- span.name { color:#FF0000;font-weight:bold;font-family:Tahoma;font-size:20 } -->
+  </style>
 </head>
 <body>
 
@@ -45,7 +50,8 @@
 		let compteur1;
 		
 		//Affichage du résultat
-		let lettres_justes;
+		let lettresJustes;
+		let lettresTrouves;
 		let indication;
 		let victoire;
 		let choixContinuer;
@@ -76,7 +82,7 @@
 				console.log("OK " + sequence);
 				precedentesPropositions = "";
 				
-				document.getElementById("instructions").innerHTML = "Proposez quartre lettres différentes entre A et H. <br> Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
+				document.getElementById("instructions").innerHTML = "I will display &#129409; Proposez quartre lettres différentes entre A et H. <br> Il vous reste " + (maximumEssais - nombreEssais) + " tentatives.";
 				//l'utilisateur souhaite commencer une nouvelle partie
 			//}
 		}
@@ -258,14 +264,16 @@
 		// Analyse de la proposition du joueur
 		function analyseEtAffichage()
 		{
-			lettres_justes = 0;
+			lettresJustes = 0;
 			indication = "";
+			lettresTrouves = 0;
 		
 			//Traitement des bonnes réponses
 			for(compteur1 = 0; compteur1 < 4; compteur1++){
 				if(proposition.charAt(compteur1) == sequence.charAt(compteur1)){
-					lettres_justes++;
-					indication = indication + "Vert ";
+					lettresJustes++;
+					lettresTrouves++;
+					indication = indication + "&#128994;";
 				}
 			}
 			
@@ -274,10 +282,19 @@
 				for(compteur2 = 0; compteur2 < 4; compteur2++){
 					if(compteur1 != compteur2){
 						if(proposition.charAt(compteur1) == sequence.charAt(compteur2)){
-							indication = indication + "Orange ";
+							lettresTrouves++;
+							indication = indication + "&#128992;";
 						}
 					}
 				}
+			}
+			
+			console.log(lettresTrouves);
+			
+			for(compteur1 = lettresTrouves; compteur1 < 4; compteur1++){
+				console.log("cc");
+
+				indication = indication + "&#9899;";
 			}
 			
 			console.log(indication);
@@ -286,7 +303,7 @@
 			//tentatives.push([proposition,indication]);
 			
 			//Victoire
-			if(lettres_justes == 4){
+			if(lettresJustes == 4){
 				continuer = false;
 				victoire = true;
 			}

@@ -175,52 +175,7 @@
 			}
 			return false;
 		}
-		
-		//gère la création d'une nouvelle partie
-		function lectureEtValidation()
-		{
-			proposition = "";
-			redemander = false;
-			
-			alert("Proposez quartre lettres différentes entre A et H.");
-			alert("Il vous reste " + maximumEssais - nombreEssais + " tentatives.");
-			
-			
-			//Lecture de la proposition jusqu'à ce qu'elle corresponde aux critères
-			while(redemander){ 
-				proposition = prompt("Quelle est votre proposition ?");
-		
-				//Test longueur et transformation en majucules
-				if(proposition.length != 4){
-					redemander = true;
-					alert("Il y a plus ou moins de 4 lettres.");
-				}
-				
-				if(!redemander){
-					proposition.toUpperCase();
-				}
-				
-				//Test longueur et doublons
-				if(!redemander){
-					for(compteur1 = 0; compteur1 < 4; compteur1++){
-						//Test si c'est entre A et H
-						if(proposition.charAt(compteur1) < A || proposition.charAt(compteur1) > H){
-							redemander = true;
-							alert("Tous les caractères ne sont pas compris entre A et H");
-						}
-						//Test de doublon
-						for(compteur2 = 0; compteur2 < 4; compteur2++){
-							if(compteur1 != compteur2){
-								if(proposition.charAt(compteur1) == proposition.charAt(compteur2)){
-									redemander = true;
-									alert("Certaines lettres sont en double");
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+
 		
 		// Analyse de la proposition du joueur
 		function analyseEtAffichage()
